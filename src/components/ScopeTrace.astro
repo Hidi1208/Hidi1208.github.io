@@ -1,0 +1,87 @@
+---
+/**
+ * The trace — a single amber waveform.
+ *
+ * variant="hero"    : full-height, bright amber, self-draws once on load
+ *                     (stroke-dashoffset animation, ~2s, then freezes).
+ * variant="divider" : shorter, dimmer, static — used as a section divider.
+ *
+ * Respects prefers-reduced-motion: the animation is skipped and the trace
+ * is shown fully drawn.
+ *
+ * The waveform is generated at build time (a damped ringing capture) so it
+ * reads like a real scope trace rather than a decorative squiggle.
+ */
+interface Props {
+  variant?: 'hero' | 'divider';
+  class?: string;
+}
+const { variant = 'hero', class: className = '' } = Astro.props;
+
+const width = 1000;
+const height = variant === 'hero' ? 120 : 40;
+const mid = height / 2;
+const amp = variant === 'hero' ? mid - 8 : mid - 4;
+
+// Damped ringing waveform: quiet, a rising disturbance, oscillation, settle.
+const pts: string[] = [];
+for (let x = 0; x <= width; x += 3) {
+  const t = x / width;
+  const ring = Math.sin(t * Math.PI * 9);
+  // envelope: ramp in, then exponential decay
+  const env = Math.min(1, t * 6) * Math.exp(-Math.max(0, t - 0.12) * 2.6);
+  const y = mid - amp * ring * env;
+  pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+}
+const d = `M ${pts.join(' L ')}`;
+
+const stroke = variant === 'hero' ? 'var(--amber)' : 'var(--amber-dim)';
+const strokeWidth = variant === 'hero' ? 2 : 1.5;
+---
+
+<svg
+  class:list={['scope-trace', variant, className]}
+  viewBox={`0 0 ${width} ${height}`}
+  width="100%"
+  height={height}
+  preserveAspectRatio="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path
+    d={d}
+    fill="none"
+    stroke={stroke}
+    stroke-width={strokeWidth}
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    pathLength="1"
+  />
+</svg>
+
+<style>
+  .scope-trace {
+    display: block;
+    overflow: visible;
+  }
+
+  /* self-drawing effect, hero only */
+  .scope-trace.hero path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw-trace 2s ease-out forwards;
+  }
+
+  @keyframes draw-trace {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scope-trace.hero path {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

@@ -1,0 +1,66 @@
+---
+/**
+ * Neutral media placeholder shown until the real photo/render is dropped in.
+ * Dark panel, amber border, monospace filename label. Keeps every page
+ * looking intentional before real media exists (brief §6).
+ */
+interface Props {
+  /** The final asset path this stands in for, e.g. /images/pearl/hero.jpg */
+  path: string;
+  /** aspect-ratio, e.g. "16 / 9" or "4 / 3" */
+  ratio?: string;
+  label?: string;
+  class?: string;
+}
+const { path, ratio = '16 / 9', label = 'MEDIA', class: className = '' } = Astro.props;
+---
+
+<div
+  class:list={['placeholder', className]}
+  style={`aspect-ratio: ${ratio};`}
+  role="img"
+  aria-label={`Placeholder for ${label.toLowerCase()} — ${path}`}
+>
+  <div class="ph-inner">
+    <span class="ph-label mono">{label}</span>
+    <span class="ph-path mono">{path}</span>
+  </div>
+</div>
+
+<style>
+  .placeholder {
+    width: 100%;
+    background: repeating-linear-gradient(
+      135deg,
+      var(--surface),
+      var(--surface) 11px,
+      #16120e 11px,
+      #16120e 22px
+    );
+    border: 1px solid var(--amber-dim);
+    border-radius: var(--radius);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+
+  .ph-inner {
+    text-align: center;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .ph-label {
+    color: var(--amber);
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+  }
+
+  .ph-path {
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    word-break: break-all;
+  }
+</style>

@@ -1,0 +1,157 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroMedia from '../../components/HeroMedia.astro';
+import ChannelTag from '../../components/ChannelTag.astro';
+import { repoUrl } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+
+const heroSrc = data.hero.src ?? `/images/${project.id}/hero.jpg`;
+
+// meta description: fall back to the one-liner
+const description = data.oneLiner;
+---
+
+<BaseLayout title={data.title} description={description}>
+  <article class="project">
+    <div class="container">
+      <a href="/#projects" class="back readout">← All projects</a>
+
+      <div class="project-head">
+        <ChannelTag channel={data.channel} />
+        <span class="readout project-year">{data.year}</span>
+      </div>
+      <h1>{data.title}</h1>
+      <p class="lead">{data.oneLiner}</p>
+      {data.status && <p class="status mono">{data.status}</p>}
+    </div>
+
+    <div class="container">
+      <HeroMedia
+        src={heroSrc}
+        alt={data.hero.alt}
+        type={data.hero.type}
+        ratio="16 / 9"
+        label="HERO"
+        loading="eager"
+      />
+
+      {
+        data.specs.length > 0 && (
+          <div class="spec-strip" role="table" aria-label="Specifications">
+            {data.specs.map((spec) => (
+              <div class="spec" role="row">
+                <span class="spec-key" role="rowheader">
+                  {spec.key}
+                </span>
+                <span class="spec-val" role="cell">
+                  {spec.value}
+                </span>
+              </div>
+            ))}
+          </div>
+        )
+      }
+    </div>
+
+    <div class="container prose">
+      <Content />
+
+      {
+        data.repos.length > 0 && (
+          <div class="repo-links">
+            {data.repos.map((slug) => (
+              <a class="btn btn-primary" href={repoUrl(slug)} target="_blank" rel="noopener">
+                <span class="mono">↗ {slug}</span>
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .project {
+    padding-top: 2rem;
+  }
+  .back {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--amber-dim);
+  }
+  .back:hover {
+    color: var(--amber);
+    text-decoration: none;
+  }
+  .project-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .project h1 {
+    margin-bottom: 0.5rem;
+  }
+  .lead {
+    font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+    color: var(--text);
+    max-width: 60ch;
+    margin-bottom: 0.5rem;
+  }
+  .status {
+    color: var(--amber-dim);
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .prose {
+    max-width: 68ch;
+    margin-top: 1.5rem;
+  }
+  .prose :global(h2) {
+    font-size: 1.3rem;
+    margin-top: 2rem;
+    margin-bottom: 0.6rem;
+  }
+  .prose :global(p) {
+    color: var(--text-dim);
+  }
+  .prose :global(ul) {
+    color: var(--text-dim);
+    padding-left: 1.2rem;
+  }
+  .prose :global(li) {
+    margin-bottom: 0.4rem;
+  }
+  .prose :global(strong) {
+    color: var(--text);
+  }
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.1em 0.35em;
+  }
+
+  .repo-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+</style>

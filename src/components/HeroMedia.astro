@@ -1,0 +1,75 @@
+---
+import { existsSync } from 'node:fs';
+import path from 'node:path';
+import Placeholder from './Placeholder.astro';
+
+/**
+ * Renders a project's hero media at its FINAL path (brief §6).
+ *
+ * At build time we check whether the file actually exists under /public.
+ * If it doesn't yet, we render a neutral placeholder labelled with that same
+ * path — so the page looks intentional now, and dropping the real file in
+ * later requires *no code change*.
+ *
+ * Motion clips are muted looping MP4 via <video autoplay muted loop
+ * playsinline> — never GIF.
+ */
+interface Props {
+  /** final public path, e.g. /images/pearl/hero.jpg */
+  src: string;
+  alt: string;
+  type?: 'image' | 'video';
+  ratio?: string;
+  label?: string;
+  /** below-the-fold images should lazy-load */
+  loading?: 'eager' | 'lazy';
+  class?: string;
+}
+const {
+  src,
+  alt,
+  type = 'image',
+  ratio = '16 / 9',
+  label = 'HERO',
+  loading = 'lazy',
+  class: className = '',
+} = Astro.props;
+
+const exists = existsSync(path.join(process.cwd(), 'public', src));
+---
+
+{
+  !exists ? (
+    <Placeholder path={src} label={label} ratio={ratio} class={className} />
+  ) : type === 'video' ? (
+    <video
+      class:list={['hero-media', className]}
+      style={`aspect-ratio: ${ratio};`}
+      src={src}
+      autoplay
+      muted
+      loop
+      playsinline
+      aria-label={alt}
+    />
+  ) : (
+    <img
+      class:list={['hero-media', className]}
+      style={`aspect-ratio: ${ratio};`}
+      src={src}
+      alt={alt}
+      loading={loading}
+      decoding="async"
+    />
+  )
+}
+
+<style>
+  .hero-media {
+    width: 100%;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+</style>

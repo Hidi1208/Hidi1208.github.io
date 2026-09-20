@@ -1,0 +1,55 @@
+---
+import { SITE } from '../lib/site';
+import ScopeTrace from './ScopeTrace.astro';
+---
+
+<footer class="site-footer">
+  <ScopeTrace variant="divider" class="footer-trace" />
+  <div class="container footer-inner">
+    <p class="footer-name">{SITE.author}</p>
+    <nav class="footer-links" aria-label="Footer">
+      <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      <a href={SITE.github} rel="me noopener" target="_blank">GitHub</a>
+      <a href={SITE.cv}>CV <span class="mono cv-ext">PDF</span></a>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+  .footer-trace {
+    opacity: 0.5;
+  }
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    padding-block: 1.75rem 2.5rem;
+  }
+  .footer-name {
+    margin: 0;
+    color: var(--text);
+    font-weight: 600;
+  }
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+  .footer-links a {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+  }
+  .footer-links a:hover {
+    color: var(--amber);
+  }
+  .cv-ext {
+    font-size: 0.7rem;
+    color: var(--amber-dim);
+  }
+</style>

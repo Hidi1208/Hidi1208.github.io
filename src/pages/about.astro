@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroMedia from '../components/HeroMedia.astro';
+import { SITE } from '../lib/site';
+
+const description = `About ${SITE.author} — embedded systems and hardware engineer from Pune, India. Toastmasters leader and digital artist.`;
+
+// Digital-art gallery — placeholders until real pieces are dropped in.
+const artPieces = [1, 2, 3, 4].map((n) => ({
+  src: `/images/about/art/piece-${n}.jpg`,
+  alt: `Digital artwork ${n} by ${SITE.author}`,
+}));
+---
+
+<BaseLayout title="About" description={description}>
+  <section class="section container about">
+    <p class="readout">CH0 · About</p>
+    <h1>About</h1>
+    <p class="lead">
+      I'm from Pune, India — a final-year Electrical &amp; Electronics Engineering
+      student at VIT Vellore. My work is hardware and firmware first; the rest of
+      this page is what I do around it.
+    </p>
+
+    <div class="about-hero">
+      <HeroMedia
+        src="/images/about/speaking-1.jpg"
+        alt="Ani speaking on stage at a Toastmasters event."
+        ratio="4 / 3"
+        label="ON STAGE"
+        loading="eager"
+      />
+      <HeroMedia
+        src="/images/about/speaking-2.jpg"
+        alt="Ani delivering a humorous speech at a Toastmasters contest."
+        ratio="4 / 3"
+        label="ON STAGE"
+        loading="lazy"
+      />
+    </div>
+
+    <h2>Toastmasters</h2>
+    <p>
+      I lead and speak at <strong>Fogo VIT</strong>, where I've served as{' '}
+      <strong>VP Education</strong> and <strong>Secretary</strong>. Highlights:
+    </p>
+    <ul>
+      <li>
+        <strong>3rd place</strong>, Humorous Speech Contest — Coruscate Division
+        Conference, Division level (District 120).
+      </li>
+      <li>Completed the <strong>Dynamic Leadership</strong> Pathway — all 5 levels.</li>
+      <li>
+        <strong>Secretary Trainer</strong> for the club Officer's Training Program.
+      </li>
+    </ul>
+
+    <h2>Digital art</h2>
+    <p>A small selection of my digital work.</p>
+    <div class="art-gallery">
+      {
+        artPieces.map((piece) => (
+          <HeroMedia
+            src={piece.src}
+            alt={piece.alt}
+            ratio="1 / 1"
+            label="ART"
+            loading="lazy"
+          />
+        ))
+      }
+    </div>
+
+    <h2>Where this is going</h2>
+    <p>
+      Long term, I want to start a hardware/electronics startup after my master's —
+      the projects on this site are the groundwork for that.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .about {
+    max-width: 70ch;
+  }
+  .lead {
+    font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+    color: var(--text);
+    margin-bottom: 2rem;
+  }
+  .about h2 {
+    margin-top: 2.5rem;
+  }
+  .about ul {
+    color: var(--text-dim);
+    padding-left: 1.2rem;
+  }
+  .about li {
+    margin-bottom: 0.5rem;
+  }
+  .about strong {
+    color: var(--text);
+  }
+  .about-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0 1.5rem;
+  }
+  .art-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+  @media (max-width: 480px) {
+    .about-hero {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

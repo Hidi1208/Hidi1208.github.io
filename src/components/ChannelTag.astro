@@ -1,0 +1,15 @@
+---
+import { CHANNELS, type Channel } from '../lib/site';
+
+interface Props {
+  channel: Channel;
+  class?: string;
+}
+const { channel, class: className = '' } = Astro.props;
+const label = CHANNELS[channel];
+---
+
+<span class:list={['channel-tag', className]}>
+  <span class="ch">{channel}</span>
+  <span>{label}</span>
+</span>

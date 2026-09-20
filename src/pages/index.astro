@@ -1,0 +1,202 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ScopeTrace from '../components/ScopeTrace.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { SITE, CHANNELS, type Channel } from '../lib/site';
+
+const all = await getCollection('projects');
+
+const featured = all
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const secondaryByChannel = (['CH1', 'CH2', 'CH3'] as Channel[]).map((ch) => ({
+  channel: ch,
+  label: CHANNELS[ch],
+  projects: all
+    .filter((p) => !p.data.featured && p.data.channel === ch)
+    .sort((a, b) => a.data.order - b.data.order),
+})).filter((group) => group.projects.length > 0);
+
+const description =
+  'Aniruddha Deshmukh — embedded systems and hardware engineer. Bare-metal firmware, PCB design, and applied ML, presented as an oscilloscope.';
+---
+
+<BaseLayout title={SITE.author} description={description}>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="container hero-inner">
+      <p class="readout hero-readout">CH1 · 5V/div · 1ms/div · TRIG↑</p>
+      <h1>{SITE.author}</h1>
+      <p class="hero-tagline">
+        Embedded systems &amp; hardware engineer — bare-metal firmware, PCB
+        design, and applied ML. Final-year EEE, VIT Vellore.
+      </p>
+      <ScopeTrace variant="hero" class="hero-trace" />
+    </div>
+  </section>
+
+  <!-- Featured -->
+  <section class="section" id="projects">
+    <div class="container">
+      <div class="section-head">
+        <h2>Featured</h2>
+        <span class="readout">Selected work</span>
+      </div>
+      <div class="featured-row">
+        {featured.map((p) => <ProjectCard project={p} featured />)}
+      </div>
+    </div>
+  </section>
+
+  {/* Secondary projects, grouped by channel — shown once they exist */}
+  {secondaryByChannel.length > 0 && (
+    <Fragment>
+      <ScopeTrace variant="divider" class="section-divider container" />
+      <section class="section" id="more">
+        <div class="container">
+          <div class="section-head">
+            <h2>More projects</h2>
+            <span class="readout">By channel</span>
+          </div>
+          <div class="channel-columns">
+            {secondaryByChannel.map((group) => (
+              <div class="channel-group">
+                <h3 class="channel-heading">
+                  <span class="mono ch-num">{group.channel}</span>
+                  {group.label}
+                </h3>
+                <div class="project-stack">
+                  {group.projects.map((p) => (
+                    <ProjectCard project={p} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </Fragment>
+  )}
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: var(--grid-size) var(--grid-size);
+    /* fade the grid out toward the edges so it reads as a scope screen */
+    -webkit-mask-image: radial-gradient(
+      ellipse 80% 70% at 30% 40%,
+      #000 55%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      ellipse 80% 70% at 30% 40%,
+      #000 55%,
+      transparent 100%
+    );
+    opacity: 0.7;
+  }
+  .hero-inner {
+    position: relative;
+    padding-block: clamp(3rem, 9vw, 6rem) clamp(2rem, 5vw, 3rem);
+  }
+  .hero-readout {
+    margin-bottom: 0.9rem;
+  }
+  .hero h1 {
+    margin-bottom: 0.6rem;
+  }
+  .hero-tagline {
+    max-width: 40ch;
+    font-size: clamp(1rem, 2.2vw, 1.2rem);
+    color: var(--text-dim);
+    margin-bottom: 1.5rem;
+  }
+  .hero-trace {
+    margin-top: 0.5rem;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .section-head h2 {
+    margin: 0;
+  }
+
+  .section-divider {
+    display: block;
+    opacity: 0.6;
+  }
+
+  .featured-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.1rem;
+  }
+
+  /* three channels side by side; headers align on the top row so all three
+     are visible without scrolling on a 1440px desktop */
+  .channel-columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .channel-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    font-size: 1.05rem;
+    color: var(--text-dim);
+    font-weight: 550;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.1rem;
+  }
+  .ch-num {
+    color: var(--amber);
+    font-size: 0.8rem;
+  }
+
+  /* cards stack vertically within each channel column */
+  .project-stack {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.1rem;
+  }
+
+  /* --- responsive: verify featured row + specs at 380px --- */
+  @media (max-width: 900px) {
+    .featured-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    /* tablet: two channel columns; the third wraps beneath */
+    .channel-columns {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 560px) {
+    .featured-row {
+      grid-template-columns: 1fr;
+    }
+    /* mobile: single column */
+    .channel-columns {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

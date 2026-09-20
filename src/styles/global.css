@@ -1,0 +1,223 @@
+/* ============================================================
+   Oscilloscope design system
+   Motifs: scope graticule, the trace, channels-as-categories.
+   Typography: Inter (sans) for everything except monospace
+   scope readouts / channel tags / spec labels.
+   ============================================================ */
+
+:root {
+  /* palette — see docs/portfolio-build-prompt.md §2.
+     Contrast checked against WCAG AA on the surfaces they're used on. */
+  --bg: #120f0c;          /* page background */
+  --surface: #1a1612;     /* card / panel */
+  --grid: #2a2118;        /* graticule lines */
+  --border: #3a2d20;      /* borders */
+  --amber: #fac775;       /* trace / accent */
+  --amber-dim: #b97a20;   /* readouts, labels (mono) */
+  --tag-bg: #633806;      /* channel pill background */
+  --text: #f1efe8;        /* primary text */
+  --text-dim: #b4b2a9;    /* secondary text */
+
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', ui-monospace,
+    'Cascadia Code', Menlo, Consolas, monospace;
+
+  --grid-size: 23px;      /* graticule cell */
+  --maxw: 1080px;
+  --radius: 6px;
+
+  --pad-page: clamp(1rem, 4vw, 2.5rem);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-sans);
+  line-height: 1.15;
+  font-weight: 650;
+  color: var(--text);
+  margin: 0 0 0.5em;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: clamp(2.1rem, 6vw, 3.4rem);
+}
+
+h2 {
+  font-size: clamp(1.4rem, 3.5vw, 1.9rem);
+}
+
+p {
+  margin: 0 0 1rem;
+  color: var(--text-dim);
+}
+
+a {
+  color: var(--amber);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* keyboard focus — visible amber ring on the dark UI */
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ---- layout helpers ---- */
+.container {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--pad-page);
+}
+
+.section {
+  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+/* ---- monospace instrument text ---- */
+.mono {
+  font-family: var(--font-mono);
+  font-variant-ligatures: none;
+}
+
+.readout {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: var(--amber-dim);
+  text-transform: uppercase;
+}
+
+/* ---- channel tag pill ---- */
+.channel-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  color: var(--amber);
+  background: var(--tag-bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.2em 0.7em;
+  white-space: nowrap;
+}
+
+.channel-tag .ch {
+  font-weight: 700;
+}
+
+/* ---- spec strip (project pages) ---- */
+.spec-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 1.5rem 0;
+}
+
+.spec-strip .spec {
+  background: var(--surface);
+  padding: 0.85rem 1rem;
+}
+
+.spec-strip .spec-key {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--amber-dim);
+  margin-bottom: 0.25rem;
+}
+
+.spec-strip .spec-val {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+/* ---- buttons ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.95rem;
+  font-weight: 550;
+  padding: 0.6em 1.1em;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  color: var(--text);
+  background: var(--surface);
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn:hover {
+  text-decoration: none;
+  border-color: var(--amber-dim);
+  color: var(--amber);
+}
+
+.btn-primary {
+  border-color: var(--amber-dim);
+  color: var(--amber);
+}
+
+/* ---- utility ---- */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
