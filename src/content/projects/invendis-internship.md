@@ -1,40 +1,61 @@
 ---
-title: 'Hardware Design Internship — Invendis Technologies, Bangalore'
-oneLiner: 'Independently designed a Wi-Fi 6 router/gateway PCB for the Silbo product line — full schematic capture across 15 pages in OrCAD Capture.'
+title: 'Hardware Design Internship — Invendis Technologies'
+oneLiner: 'Schematic design of a Wi-Fi 6 router/gateway board around the MediaTek MT7981A (Filogic 820), across 15 OrCAD pages.'
 year: 'May–Jun 2026'
 channel: CH2
+hero:
+  src: '/images/invendis-internship/hero.png'
+  alt: 'Simplified block diagram of the router board: MT7981A SoC connected to DDR4, SPI NAND, Ethernet switch, Wi-Fi 6 RF, USB 3.0 hub and 5G modem, fed by a sequenced power tree.'
+  type: image
 order: 4
 featured: true
-hero:
-  alt: 'Simplified block diagram of a Wi-Fi 6 router/gateway: MT7981A Filogic 820 SoC with power distribution, a 7-port GbE switch, DDR4, RF frontend and a 5G modem.'
-  type: image
 specs:
-  - key: Role
-    value: Hardware design intern
-  - key: Product
-    value: Silbo Wi-Fi 6 router/gateway
   - key: SoC
-    value: MT7981A · Filogic 820
-  - key: Deliverable
-    value: 15-page schematic · OrCAD 17.2
-  - key: Blocks
-    value: Power · GbE · DDR4 · RF · 5G
+    value: MediaTek MT7981A (Filogic 820)
+  - key: Subsystems
+    value: Power · GbE switch · Wi-Fi 6 RF · USB 3.0 · DDR4
+  - key: Scope
+    value: 15-page schematic · 4 buck + 3 LDO rails
+  - key: Tools
+    value: OrCAD Capture 17.4
+  - key: Role
+    value: Hardware design intern, Bangalore
 ---
 
 ## What it is
 
-A hardware design internship at Invendis Technologies, Bangalore. Working on the
-Silbo product line, I independently designed a Wi-Fi 6 router/gateway PCB
-(MT7981A Filogic 820) — professional engineering work under a production
-programme, not a personal project.
+A five-week industrial internship in the hardware R&D team at Invendis
+Technologies, working under a senior hardware design engineer. The project was
+the full schematic design of a Wi-Fi 6 router/gateway board built around the
+MediaTek MT7981A, aligned with Invendis's MediaTek-based Silbo product line.
+The board has four Gigabit LAN ports, Wi-Fi 6, two USB 3.0 ports, a 5G modem
+slot and 1 GB of DDR4. The schematics are proprietary, so this page shows a
+simplified architecture only.
 
 ## What I built
 
-- **Full schematic capture in OrCAD Capture 17.2 across 15 pages**: multi-rail
-  power distribution, a 7-port GbE switch, DDR4, the Wi-Fi 6 RF frontend, and a 5G
-  modem.
-- Owned the design **independently**, from block-level architecture through to a
-  complete, review-ready schematic set.
+- **Power architecture.** A 12 V input with fuse and TVS protection, four
+  SY8205FCC synchronous buck converters (5 V, 3.3 V, 0.87 V core, 1.2 V DDR),
+  three LDOs and a DDR4 termination regulator.
+- **Ethernet.** MT7531AE switch connected to the SoC over HSGMII, with MagJack
+  ports, ESD protection and strapping configuration.
+- **Wi-Fi 6 front end.** MT7976CN companion chip with a shared 40 MHz clock
+  and pi-network antenna matching.
+- **USB and cellular.** RTS5411T-GR hub splitting the SoC's single USB 3.0 port
+  into two external ports and an internal 5G modem link, with SIM interface.
+- **Memory.** DDR4 SDRAM and SPI NAND flash for OpenWrt, plus boot strapping.
+- **Organisation.** Structured the design into 15 subsystem pages with an
+  interface-prefixed net naming convention.
 
-*The diagram above is a simplified block diagram — the production schematics are
-proprietary and are not shown.*
+## Design decisions
+
+- **TVS selection by inequality.** Chose the SMCJ16A so that adapter max 
+  standoff < breakdown < clamp < downstream absolute max, leaving a 4 V margin
+  below the buck converters' 30 V rating.
+- **Sequencing without power-good.** The SY8205FCC has no PGOOD pin, so I built
+  the SoC's required start-up order from RC delays on each enable pin
+  (t ≈ 0.454·RC), ending with reset released at least 35 ms after the rails settle.
+- **HSGMII over RGMII** for the switch link: fewer traces, serial signalling,
+  and no parallel-bus length-matching burden.
+- **Weak pulls on strapping pins** instead of hard ties, so boot modes can be
+  jumpered during debug and pins reused after latching.
