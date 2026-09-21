@@ -32,6 +32,8 @@ configuration and class labels; a universal ESP32 runtime parses it at boot,
 loads the float32 weights, and starts classifying live sensor data — swap the
 module, and the runtime reconfigures itself with no re-flash.
 
+![ESP32 with the 24LC512 EEPROM module and MPU-6050 sensor](/images/sdhm-tinyml/closeup.jpg)
+
 ## What I built
 
 - A **1D CNN gesture classifier** (ESP32 + MPU-6050) reaching **99.2% accuracy**
@@ -43,6 +45,8 @@ module, and the runtime reconfigures itself with no re-flash.
   float32 weights from a 24LC512 EEPROM.
 - A **Python toolchain** that packs models into 64 KB EEPROM images with CRC-32; a
   working prototype reads a 7-layer, 57 KB model and classifies live sensor data.
+
+![Serial monitor showing the ESP32 loading the model from EEPROM and classifying live gestures](/images/sdhm-tinyml/terminal.jpg)
 
 *Two repos:* the gesture classifier (`tinyml-gesture-esp32`, model training +
 inference engine) came first and was then extended into the hot-swappable module
