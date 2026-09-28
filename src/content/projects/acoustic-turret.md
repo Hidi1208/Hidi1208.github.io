@@ -8,7 +8,8 @@ featured: false
 repos:
   - acoustic-localisation-turret
 hero:
-  alt: 'Pan-tilt turret with four INMP441 MEMS microphones driven by two ESP32 nodes.'
+  src: '/images/acoustic-turret/hero.png'
+  alt: 'Top-down view of the turret prototype: four MEMS microphones at the board corners and the pan servo at centre with the vertical tilt arm.'
   type: image
 specs:
   - key: Array
@@ -33,3 +34,5 @@ the turret toward it in real time.
   and **two ESP32 nodes** communicating over **ESP-NOW**.
 - Implemented **TDOA cross-correlation at 44.1 kHz** (I2S capture) to localise the
   source and drive the pan-tilt mechanism.
+
+![Prototype wiring during bring-up](/images/acoustic-turret/wiring.png)

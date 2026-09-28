@@ -8,7 +8,8 @@ featured: false
 repos:
   - pcb-designs
 hero:
-  alt: 'KiCad board layouts for a mechanical keyboard, a macropad and a USB-C Power Delivery hub.'
+  src: '/images/pcb-designs/hero.png'
+  alt: 'KiCad 3D renders of three boards: a mechanical keyboard, a macropad, and a USB-C Power Delivery hub.'
   type: image
 specs:
   - key: Tool
@@ -23,15 +24,29 @@ specs:
 
 ## What it is
 
-A set of three complete PCB designs done in KiCad and open-sourced in full —
-schematics, layout and fabrication files for a mechanical keyboard, a macropad and
-a USB-C Power Delivery hub.
+Three PCB designs in KiCad, open-sourced with full schematics, layout and
+fabrication-ready Gerbers. These are designs, not fabricated boards.
 
-## What I built
+## 65% wireless mechanical keyboard
 
-- Three complete **KiCad PCBs**: a **mechanical keyboard**, a **macropad**, and a
-  **USB-C Power Delivery hub**.
-- **Open-sourced** with full schematics, layout and fabrication files.
+A fully custom BLE keyboard: 67 keys plus a rotary encoder, nRF52840 wireless,
+OLED, per-key backlight and USB-C charging. The 6×12 matrix needed more I/O than
+the SoC exposes, so an MCP23017 expander handles the extra columns. Two-layer
+routing, mixed SMD and through-hole assembly, with a parametric case in OpenSCAD.
 
-*These are board designs, not fabricated hardware — the repository ships the
-design files, not assembled boards.*
+![PCB layout of the 65% mechanical keyboard](/images/pcb-designs/keyboard-layout.png)
+
+## 9-key macropad
+
+A compact USB macropad with a 3×3 switch grid, rotary encoder and OLED, running
+QMK. Kept under 100×100 mm to stay inside the cheap fabrication tier, which made
+layout on the constrained board area the main design problem.
+
+![PCB layout of the 9-key macropad](/images/pcb-designs/macropad-layout.png)
+
+## USB-C Power Delivery hub
+
+DESCRIBE THIS ONE — PD CONTROLLER, VOLTAGES AND CURRENT SUPPORTED, HOW YOU HANDLED
+POWER ROUTING AND PROTECTION.
+
+![PCB layout of the USB-C Power Delivery hub](/images/pcb-designs/pd-hub-layout.png)
