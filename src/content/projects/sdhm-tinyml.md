@@ -32,7 +32,7 @@ configuration and class labels; a universal ESP32 runtime parses it at boot,
 loads the float32 weights, and starts classifying live sensor data — swap the
 module, and the runtime reconfigures itself with no re-flash.
 
-![ESP32 with the 24LC512 EEPROM module and MPU-6050 sensor](/images/self-describing-tinyml-modules/closeup.jpg)
+![ESP32 with the 24LC512 EEPROM module and MPU-6050 sensor](/images/self-describing-tinyml-modules/closeup.webp)
 
 ## What I built
 
@@ -46,7 +46,7 @@ module, and the runtime reconfigures itself with no re-flash.
 - A **Python toolchain** that packs models into 64 KB EEPROM images with CRC-32; a
   working prototype reads a 7-layer, 57 KB model and classifies live sensor data.
 
-![Serial monitor showing the ESP32 loading the model from EEPROM and classifying live gestures](/images/self-describing-tinyml-modules/terminal.jpg)
+![Serial monitor showing the ESP32 loading the model from EEPROM and classifying live gestures](/images/self-describing-tinyml-modules/terminal.webp)
 
 *Two repos:* the gesture classifier (`tinyml-gesture-esp32`, model training +
 inference engine) came first and was then extended into the hot-swappable module

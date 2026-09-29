@@ -31,7 +31,7 @@ bare-metal STM32 acquires multi-sensor data and streams it to a Raspberry Pi 5,
 where a three-layer context engine feeds an LLM that explains what the hardware
 is doing — the whole path, from I2C register reads to a live dashboard, is mine.
 
-![STM32F401RE wired to the MPU9250 IMU and ACS712 current sensor](/images/pearl/hardware-closeup.jpg)
+![STM32F401RE wired to the MPU9250 IMU and ACS712 current sensor](/images/pearl/hardware-closeup.webp)
 
 ## What I built
 
@@ -46,4 +46,4 @@ is doing — the whole path, from I2C register reads to a live dashboard, is min
   engine → LLM (Gemini Flash / Qwen 2.5 via `llama.cpp`) → live web dashboard
   (FastAPI + WebSocket, PySerial on the ingest side).
 
-![Live dashboard flagging a detected fault with the LLM's diagnosis](/images/pearl/dashboard-fault.png)
+![Live dashboard flagging a detected fault with the LLM's diagnosis](/images/pearl/dashboard-fault.webp)

@@ -17,7 +17,7 @@ const { project } = Astro.props;
 const { data } = project;
 const { Content } = await render(project);
 
-const heroSrc = data.hero.src ?? `/images/${project.id}/hero.jpg`;
+const heroSrc = data.hero.src ?? `/images/${project.id}/hero.webp`;
 
 // meta description: fall back to the one-liner
 const description = data.oneLiner;

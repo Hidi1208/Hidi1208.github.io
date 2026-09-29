@@ -9,7 +9,7 @@ repos:
   - neat-maze-navigation
 status: 'Paper under review, IEEE RICE.'
 hero:
-  src: '/images/neat-maze/hero.png'
+  src: '/images/neat-maze/hero.webp'
   alt: 'Side-by-side paths of the aggregated controller and the single-population baseline on the unseen test maze, both ending in a wall collision.'
   type: image
 specs:
@@ -30,7 +30,7 @@ maze they were trained on. Two training strategies were evaluated across 100
 procedurally generated mazes, alongside a method for aggregating many evolved
 controllers into one.
 
-![Four procedurally generated training mazes and the unseen test maze](/images/neat-maze/mazes.png)
+![Four procedurally generated training mazes and the unseen test maze](/images/neat-maze/mazes.webp)
 
 ## What I built
 
@@ -45,7 +45,7 @@ better on both metrics: it survived 338 of 600 frames and came within 331 px of
 the goal, against 268 frames and 464 px for the single-population baseline. Both
 runs ended in a wall collision.
 
-![Only 11 of 196 unique connection genes survived the 30% majority threshold](/images/neat-maze/gene-retention.png)
+![Only 11 of 196 unique connection genes survived the 30% majority threshold](/images/neat-maze/gene-retention.webp)
 
 The failure modes were the interesting part. The 30% majority threshold filtered
 196 unique connection genes down to 11, discarding the maze-specific obstacle

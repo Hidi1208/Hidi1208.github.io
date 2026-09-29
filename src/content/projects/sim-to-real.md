@@ -8,7 +8,7 @@ featured: false
 repos:
   - sim-to-real-robot-controller
 hero:
-  src: '/images/sim-to-real/hero.png'
+  src: '/images/sim-to-real/hero.webp'
   alt: 'Ackermann-steering robot mid-run in the PyBullet simulation environment.'
   type: image
 specs:

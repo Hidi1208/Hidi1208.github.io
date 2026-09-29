@@ -4,7 +4,7 @@ oneLiner: 'Designed and trained NARX, vanilla RNN and LSTM controllers to replac
 year: '2025–2026'
 channel: CH3
 hero:
-  src: '/images/pv-bes-control/hero.png'
+  src: '/images/pv-bes-control/hero.webp'
   alt: 'DC bus voltage of PI, NARX, vanilla RNN and LSTM controllers across steady-state, irradiation change, and DC and AC load variation.'
   type: image
 order: 3
@@ -29,7 +29,7 @@ system, run by my faculty guide's lab. My part was the machine-learning side:
 replacing the conventional PI controller that regulates the 150 V DC bus with
 neural-network controllers, and finding out which architecture does it best.
 
-![DC bus and battery current control scheme with the LSTM in the outer voltage loop](/images/pv-bes-control/control-scheme.png)
+![DC bus and battery current control scheme with the LSTM in the outer voltage loop](/images/pv-bes-control/control-scheme.webp)
 
 ## What I built
 

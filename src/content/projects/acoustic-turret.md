@@ -8,7 +8,7 @@ featured: false
 repos:
   - acoustic-localisation-turret
 hero:
-  src: '/images/acoustic-turret/hero.png'
+  src: '/images/acoustic-turret/hero.webp'
   alt: 'Top-down view of the turret prototype: four MEMS microphones at the board corners and the pan servo at centre with the vertical tilt arm.'
   type: image
 specs:
@@ -37,4 +37,4 @@ the turret toward it in real time.
 - Implemented **TDOA cross-correlation at 44.1 kHz** (I2S capture) to localise the
   source and drive the pan-tilt mechanism.
 
-![Prototype wiring during bring-up](/images/acoustic-turret/wiring.png)
+![Prototype wiring during bring-up](/images/acoustic-turret/wiring.webp)

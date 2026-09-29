@@ -8,7 +8,7 @@ featured: false
 repos:
   - pcb-designs
 hero:
-  src: '/images/pcb-designs/hero.png'
+  src: '/images/pcb-designs/hero.webp'
   alt: 'KiCad 3D renders of three boards: a mechanical keyboard, a macropad, and a USB-C Power Delivery hub.'
   type: image
 specs:
@@ -34,7 +34,7 @@ OLED, per-key backlight and USB-C charging. The 6×12 matrix needed more I/O tha
 the SoC exposes, so an MCP23017 expander handles the extra columns. Two-layer
 routing, mixed SMD and through-hole assembly, with a parametric case in OpenSCAD.
 
-![PCB layout of the 65% mechanical keyboard](/images/pcb-designs/keyboard-layout.png)
+![PCB layout of the 65% mechanical keyboard](/images/pcb-designs/keyboard-layout.webp)
 
 ## 9-key macropad
 
@@ -42,7 +42,7 @@ A compact USB macropad with a 3×3 switch grid, rotary encoder and OLED, running
 QMK. Kept under 100×100 mm to stay inside the cheap fabrication tier, which made
 layout on the constrained board area the main design problem.
 
-![PCB layout of the 9-key macropad](/images/pcb-designs/macropad-layout.png)
+![PCB layout of the 9-key macropad](/images/pcb-designs/macropad-layout.webp)
 
 ## USB-C Power Delivery hub
 
@@ -55,4 +55,4 @@ P-channel MOSFETs form mutually exclusive power paths, so if the source can't
 meet the PD request the board falls back to 5 V at 900 mA instead of simply
 failing. Two layers, 80 × 60 mm, DRC-clean and fabrication-ready.
 
-![PCB layout of the USB-C Power Delivery hub](/images/pcb-designs/pd-hub-layout.png)
+![PCB layout of the USB-C Power Delivery hub](/images/pcb-designs/pd-hub-layout.webp)

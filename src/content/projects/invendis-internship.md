@@ -4,7 +4,7 @@ oneLiner: 'Schematic design of a Wi-Fi 6 router/gateway board around the MediaTe
 year: 'May–Jun 2026'
 channel: CH2
 hero:
-  src: '/images/invendis-internship/hero.png'
+  src: '/images/invendis-internship/hero.webp'
   alt: 'Simplified block diagram of the router board: MT7981A SoC connected to DDR4, SPI NAND, Ethernet switch, Wi-Fi 6 RF, USB 3.0 hub and 5G modem, fed by a sequenced power tree.'
   type: image
 order: 4

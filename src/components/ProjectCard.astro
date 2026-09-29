@@ -15,7 +15,7 @@ const href = `/projects/${project.id}`;
 <a class:list={['card', { featured }]} href={href}>
   <div class="card-media">
     <HeroMedia
-      src={data.hero.src ?? `/images/${project.id}/hero.jpg`}
+      src={data.hero.src ?? `/images/${project.id}/hero.webp`}
       alt={data.hero.alt}
       type={data.hero.type}
       ratio={featured ? '16 / 10' : '16 / 9'}
