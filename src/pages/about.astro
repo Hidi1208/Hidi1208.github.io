@@ -5,11 +5,28 @@ import { SITE } from '../lib/site';
 
 const description = `About ${SITE.author} — embedded systems and hardware engineer from Pune, India. Toastmasters leader and digital artist.`;
 
-// Digital-art gallery — placeholders until real pieces are dropped in.
-const artPieces = [1, 2, 3, 4].map((n) => ({
-  src: `/images/about/art/piece-${n}.jpg`,
-  alt: `Digital artwork ${n} by ${SITE.author}`,
-}));
+const artPieces = [
+  {
+    src: '/images/about/art/violin.jpg',
+    alt: 'Digital painting of a violin and bow resting on open sheet music.',
+    ratio: '3 / 4',
+  },
+  {
+    src: '/images/about/art/portrait.jpg',
+    alt: 'Digital portrait illustration of a character with dark red hair.',
+    ratio: '3 / 4',
+  },
+  {
+    src: '/images/about/art/figure.jpg',
+    alt: 'Digital illustration of a seated figure holding a camera.',
+    ratio: '3 / 4',
+  },
+  {
+    src: '/images/about/art/night-scene.jpg',
+    alt: 'Digital painting of a figure seated on a fallen tree above still water at night.',
+    ratio: '3 / 4',
+  },
+];
 ---
 
 <BaseLayout title="About" description={description}>
@@ -25,14 +42,14 @@ const artPieces = [1, 2, 3, 4].map((n) => ({
     <div class="about-hero">
       <HeroMedia
         src="/images/about/speaking-1.jpg"
-        alt="Ani speaking on stage at a Toastmasters event."
+        alt="Speaking at the Coruscate 2K25 Division C semi-annual conference."
         ratio="4 / 3"
         label="ON STAGE"
         loading="eager"
       />
       <HeroMedia
         src="/images/about/speaking-2.jpg"
-        alt="Ani delivering a humorous speech at a Toastmasters contest."
+        alt="Mid-speech at a Toastmasters contest."
         ratio="4 / 3"
         label="ON STAGE"
         loading="lazy"
@@ -46,8 +63,8 @@ const artPieces = [1, 2, 3, 4].map((n) => ({
     </p>
     <ul>
       <li>
-        <strong>3rd place</strong>, Humorous Speech Contest — Coruscate Division
-        Conference, Division level (District 120).
+        <strong>3rd place</strong>, Humorous Speech Contest — Coruscate, the
+        Division C conference (District 120).
       </li>
       <li>Completed the <strong>Dynamic Leadership</strong> Pathway — all 5 levels.</li>
       <li>
@@ -56,20 +73,24 @@ const artPieces = [1, 2, 3, 4].map((n) => ({
     </ul>
 
     <h2>Digital art</h2>
-    <p>A small selection of my digital work.</p>
+    <p>
+      A hobby alongside the engineering work — still life, portraits, and figure
+      studies.
+    </p>
     <div class="art-gallery">
       {
         artPieces.map((piece) => (
           <HeroMedia
             src={piece.src}
             alt={piece.alt}
-            ratio="1 / 1"
+            ratio={piece.ratio}
             label="ART"
             loading="lazy"
           />
         ))
       }
     </div>
+    <p class="art-note">Drawn from reference images found on Pinterest.</p>
 
     <h2>Where this is going</h2>
     <p>
@@ -109,12 +130,21 @@ const artPieces = [1, 2, 3, 4].map((n) => ({
   }
   .art-gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.75rem;
     margin-top: 1rem;
+    align-items: start;
+  }
+  .art-note {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
   }
   @media (max-width: 480px) {
     .about-hero {
+      grid-template-columns: 1fr;
+    }
+    .art-gallery {
       grid-template-columns: 1fr;
     }
   }

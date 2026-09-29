@@ -6,7 +6,7 @@ channel: CH1
 order: 2
 featured: true
 repos:
-  - sdhm-tinyml
+  - self-describing-tinyml-modules
   - tinyml-gesture-esp32
 hero:
   alt: 'ESP32 board with an MPU-6050 IMU and a 24LC512 EEPROM on a breadboard, classifying live gestures.'
@@ -32,7 +32,7 @@ configuration and class labels; a universal ESP32 runtime parses it at boot,
 loads the float32 weights, and starts classifying live sensor data — swap the
 module, and the runtime reconfigures itself with no re-flash.
 
-![ESP32 with the 24LC512 EEPROM module and MPU-6050 sensor](/images/sdhm-tinyml/closeup.jpg)
+![ESP32 with the 24LC512 EEPROM module and MPU-6050 sensor](/images/self-describing-tinyml-modules/closeup.jpg)
 
 ## What I built
 
@@ -46,8 +46,8 @@ module, and the runtime reconfigures itself with no re-flash.
 - A **Python toolchain** that packs models into 64 KB EEPROM images with CRC-32; a
   working prototype reads a 7-layer, 57 KB model and classifies live sensor data.
 
-![Serial monitor showing the ESP32 loading the model from EEPROM and classifying live gestures](/images/sdhm-tinyml/terminal.jpg)
+![Serial monitor showing the ESP32 loading the model from EEPROM and classifying live gestures](/images/self-describing-tinyml-modules/terminal.jpg)
 
 *Two repos:* the gesture classifier (`tinyml-gesture-esp32`, model training +
 inference engine) came first and was then extended into the hot-swappable module
-system (`sdhm-tinyml`, universal engine + EEPROM descriptor).
+system (`self-describing-tinyml-modules`, universal engine + EEPROM descriptor).
