@@ -46,7 +46,13 @@ layout on the constrained board area the main design problem.
 
 ## USB-C Power Delivery hub
 
-DESCRIBE THIS ONE — PD CONTROLLER, VOLTAGES AND CURRENT SUPPORTED, HOW YOU HANDLED
-POWER ROUTING AND PROTECTION.
+A single USB-C PD charger in, three regulated rails out. A CYPD3177 sink
+controller negotiates 20 V at 3 A over the CC lines with no firmware at all —
+voltage and current requests are set purely by resistor dividers on four
+configuration pins — then three MP1584EN buck converters step it down to 12 V at
+the barrel jack, 5 V at a USB-A port, and 3.3 V at a screw terminal. Two
+P-channel MOSFETs form mutually exclusive power paths, so if the source can't
+meet the PD request the board falls back to 5 V at 900 mA instead of simply
+failing. Two layers, 80 × 60 mm, DRC-clean and fabrication-ready.
 
 ![PCB layout of the USB-C Power Delivery hub](/images/pcb-designs/pd-hub-layout.png)

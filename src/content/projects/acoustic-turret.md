@@ -20,6 +20,8 @@ specs:
     value: TDOA cross-correlation
   - key: Sample rate
     value: 44.1 kHz
+  - key: Context
+    value: Team project · SELECT Makeathon 2026
 ---
 
 ## What it is
