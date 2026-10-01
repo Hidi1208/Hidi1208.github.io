@@ -1,12 +1,11 @@
 ---
 title: 'PCB Design Portfolio'
-oneLiner: 'Three complete, open-sourced KiCad PCBs — a mechanical keyboard, a macropad and a USB-C Power Delivery hub — with full schematics, layout and fab files.'
+oneLiner: 'Three KiCad boards taken from schematic to fabrication-ready files: a keyboard, a macropad, and a USB-C PD hub.'
 year: '2025–2026'
 channel: CH2
-order: 1
-featured: false
+order: 8
 repos:
-  - pcb-designs
+  - pcb_designs
 hero:
   src: '/images/pcb-designs/hero.webp'
   alt: 'KiCad 3D renders of three boards: a mechanical keyboard, a macropad, and a USB-C Power Delivery hub.'
@@ -15,44 +14,45 @@ specs:
   - key: Tool
     value: KiCad
   - key: Boards
-    value: Keyboard · Macropad · USB-C PD hub
-  - key: Released
-    value: Schematics · layout · fab files
-  - key: Licence
-    value: Open source
+    value: 65% keyboard · 9-key macropad · PD hub
+  - key: Output
+    value: Schematics · layouts · Gerbers
+  - key: Status
+    value: Designed, not fabricated
 ---
 
 ## What it is
 
-Three PCB designs in KiCad, open-sourced with full schematics, layout and
-fabrication-ready Gerbers. These are designs, not fabricated boards.
+Three boards I designed to learn PCB work properly, all open sourced with
+schematics, layout and fabrication files. None of them have been manufactured
+yet.
 
 ## 65% wireless mechanical keyboard
 
-A fully custom BLE keyboard: 67 keys plus a rotary encoder, nRF52840 wireless,
-OLED, per-key backlight and USB-C charging. The 6×12 matrix needed more I/O than
-the SoC exposes, so an MCP23017 expander handles the extra columns. Two-layer
-routing, mixed SMD and through-hole assembly, with a parametric case in OpenSCAD.
+67 keys plus a rotary encoder, an nRF52840 for BLE, an OLED, per-key backlight
+and USB-C charging. The 6×12 matrix needs more I/O than the SoC exposes, so an
+MCP23017 expander handles the extra columns. Two layer board, mixed SMD and
+through-hole, with a parametric case in OpenSCAD.
 
-![PCB layout of the 65% mechanical keyboard](/images/pcb-designs/keyboard-layout.webp)
+![PCB layout of the keyboard](/images/pcb-designs/keyboard-layout.webp)
 
 ## 9-key macropad
 
-A compact USB macropad with a 3×3 switch grid, rotary encoder and OLED, running
-QMK. Kept under 100×100 mm to stay inside the cheap fabrication tier, which made
-layout on the constrained board area the main design problem.
+A 3×3 switch grid with a rotary encoder and OLED, running QMK. Kept under
+100×100 mm to stay in the cheap fabrication tier, which made fitting everything
+onto the board the main constraint.
 
-![PCB layout of the 9-key macropad](/images/pcb-designs/macropad-layout.webp)
+![PCB layout of the macropad](/images/pcb-designs/macropad-layout.webp)
 
 ## USB-C Power Delivery hub
 
-A single USB-C PD charger in, three regulated rails out. A CYPD3177 sink
-controller negotiates 20 V at 3 A over the CC lines with no firmware at all —
+One PD charger in, three regulated rails out. A CYPD3177 sink controller
+negotiates 20 V at 3 A over the CC lines with no firmware involved, since the
 voltage and current requests are set purely by resistor dividers on four
-configuration pins — then three MP1584EN buck converters step it down to 12 V at
-the barrel jack, 5 V at a USB-A port, and 3.3 V at a screw terminal. Two
-P-channel MOSFETs form mutually exclusive power paths, so if the source can't
-meet the PD request the board falls back to 5 V at 900 mA instead of simply
-failing. Two layers, 80 × 60 mm, DRC-clean and fabrication-ready.
+configuration pins. Three MP1584EN bucks step that down to 12 V on a barrel
+jack, 5 V on USB-A and 3.3 V on a screw terminal. Two P-channel MOSFETs form
+mutually exclusive power paths, so if the source cannot meet the request the
+board falls back to 5 V at 900 mA instead of just not working. 80 × 60 mm, two
+layers, DRC clean.
 
-![PCB layout of the USB-C Power Delivery hub](/images/pcb-designs/pd-hub-layout.webp)
+![PCB layout of the USB-C PD hub](/images/pcb-designs/pd-hub-layout.webp)

@@ -1,6 +1,6 @@
 ---
 title: 'Self-Describing Hot-Swappable Sensor Modules with a Universal TinyML Engine'
-oneLiner: 'A custom-from-scratch C++ inference engine and a 512-byte EEPROM descriptor that let an ESP32 hot-swap neural-network sensor modules at boot.'
+oneLiner: 'Neural networks stored in a sensor module EEPROM, so one ESP32 runtime can load and run whatever model it finds.'
 year: '2025–2026'
 channel: CH1
 order: 2
@@ -9,45 +9,46 @@ repos:
   - self-describing-tinyml-modules
   - tinyml-gesture-esp32
 hero:
-  alt: 'ESP32 board with an MPU-6050 IMU and a 24LC512 EEPROM on a breadboard, classifying live gestures.'
+  src: '/images/sdhm-tinyml/hero.webp'
+  alt: 'ESP32 wired to a 24LC512 EEPROM module and an MPU-6050 sensor.'
   type: image
 specs:
   - key: MCU
-    value: ESP32 · MPU-6050 · 24LC512
+    value: ESP32 · PlatformIO
+  - key: Model
+    value: 1D CNN · 99.2% on 4 gesture classes
+  - key: Storage
+    value: 512-byte descriptor · 24LC512 EEPROM
   - key: Engine
-    value: Custom C++ (no TFLite Micro)
-  - key: Accuracy
-    value: 99.2% · 4-class 1D CNN
-  - key: Descriptor
-    value: 512-byte binary · CRC-32
+    value: Custom C++ · no TFLite Micro
   - key: Toolchain
-    value: PlatformIO · Python
+    value: Python · CRC-32 · 64 KB images
 ---
 
 ## What it is
 
-A sensor-module system where the *module* carries its own neural network. A
-512-byte binary descriptor in EEPROM encodes the network architecture, sensor
-configuration and class labels; a universal ESP32 runtime parses it at boot,
-loads the float32 weights, and starts classifying live sensor data — swap the
-module, and the runtime reconfigures itself with no re-flash.
+If a sensor module carries its own neural network, any runtime that knows how to
+read the descriptor can use it. That was the question I wanted to answer. The
+gesture classifier came first, then I extended it into the hot-swappable module
+system, which is why there are two repos.
 
-![ESP32 with the 24LC512 EEPROM module and MPU-6050 sensor](/images/self-describing-tinyml-modules/closeup.webp)
+![ESP32 with the EEPROM module and MPU-6050](/images/sdhm-tinyml/closeup.webp)
 
 ## What I built
 
-- A **1D CNN gesture classifier** (ESP32 + MPU-6050) reaching **99.2% accuracy**
-  across four classes.
-- A **custom C++ inference engine written from scratch** — Conv1D, MaxPool, Dense,
-  ReLU and Softmax — removing the TFLite Micro dependency entirely.
-- A **512-byte binary descriptor** in EEPROM encoding the NN architecture, sensor
-  config and class labels; the universal runtime parses it at boot and loads
-  float32 weights from a 24LC512 EEPROM.
-- A **Python toolchain** that packs models into 64 KB EEPROM images with CRC-32; a
-  working prototype reads a 7-layer, 57 KB model and classifies live sensor data.
+- A 1D CNN gesture classifier on an ESP32 with an MPU-6050, reaching 99.2%
+  across 4 classes.
+- A C++ inference engine written from scratch with Conv1D, MaxPool, Dense, ReLU
+  and Softmax layers. Writing it myself meant dropping TFLite Micro entirely,
+  which was the point: I wanted to know exactly what was happening at inference
+  time.
+- A 512-byte binary descriptor that encodes the network architecture, sensor
+  configuration and class labels, stored in EEPROM on the module itself. A
+  universal ESP32 runtime parses it at boot and pulls float32 weights off a
+  24LC512.
+- A Python toolchain that packs architecture, weights and metadata into 64 KB
+  EEPROM images with CRC-32 verification.
+- The working prototype reads a 7 layer model of about 57 KB and classifies live
+  sensor data.
 
-![Serial monitor showing the ESP32 loading the model from EEPROM and classifying live gestures](/images/self-describing-tinyml-modules/terminal.webp)
-
-*Two repos:* the gesture classifier (`tinyml-gesture-esp32`, model training +
-inference engine) came first and was then extended into the hot-swappable module
-system (`self-describing-tinyml-modules`, universal engine + EEPROM descriptor).
+![Serial monitor showing live classification](/images/sdhm-tinyml/terminal.webp)

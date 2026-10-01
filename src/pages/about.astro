@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroMedia from '../components/HeroMedia.astro';
 import { SITE } from '../lib/site';
 
-const description = `About ${SITE.author} — embedded systems and hardware engineer from Pune, India. Toastmasters leader and digital artist.`;
+const description = `About ${SITE.author}, final-year Electrical and Electronics Engineering student at VIT Vellore. Toastmasters, digital art, and what I'm aiming at next.`;
 
 const artPieces = [
   {
@@ -34,9 +34,9 @@ const artPieces = [
     <p class="readout">CH0 · About</p>
     <h1>About</h1>
     <p class="lead">
-      I'm from Pune, India — a final-year Electrical &amp; Electronics Engineering
-      student at VIT Vellore. My work is hardware and firmware first; the rest of
-      this page is what I do around it.
+      I'm from Pune, and I'm in my final year of Electrical &amp; Electronics
+      Engineering at VIT Vellore. Most of what I do is firmware and hardware.
+      This page is the rest of it.
     </p>
 
     <div class="about-hero">
@@ -58,25 +58,25 @@ const artPieces = [
 
     <h2>Toastmasters</h2>
     <p>
-      I lead and speak at <strong>Fogo VIT</strong>, where I've served as{' '}
-      <strong>VP Education</strong> and <strong>Secretary</strong>. Highlights:
+      I've been part of <strong>Fogo VIT</strong> through 2025, as Secretary for
+      the first half of the year and <strong>VP Education</strong> for the
+      second, in a club of 50 or so members.
     </p>
     <ul>
       <li>
-        <strong>3rd place</strong>, Humorous Speech Contest — Coruscate, the
-        Division C conference (District 120).
+        <strong>3rd place</strong> in the Humorous Speech Contest at Coruscate,
+        the Division C conference (District 120).
       </li>
-      <li>Completed the <strong>Dynamic Leadership</strong> Pathway — all 5 levels.</li>
+      <li>Finished the <strong>Dynamic Leadership</strong> Pathway, all 5 levels.</li>
       <li>
-        <strong>Secretary Trainer</strong> for the club Officer's Training Program.
+        <strong>Secretary Trainer</strong> in the district Officer's Training
+        Program.
       </li>
     </ul>
 
-    <h2>Digital art</h2>
-    <p>
-      A hobby alongside the engineering work — still life, portraits, and figure
-      studies.
-    </p>
+        <h2>Digital art</h2>
+    <p>Something I do when I'm not soldering. Mostly still life and figures.</p>
+
     <div class="art-gallery">
       {
         artPieces.map((piece) => (
@@ -92,10 +92,10 @@ const artPieces = [
     </div>
     <p class="art-note">Drawn from reference images found on Pinterest.</p>
 
-    <h2>Where this is going</h2>
+     <h2>Where this is going</h2>
     <p>
-      Long term, I want to start a hardware/electronics startup after my master's —
-      the projects on this site are the groundwork for that.
+      I want to start a hardware company eventually, after a master's. The
+      projects here are me working out what I'm actually good at.
     </p>
   </section>
 </BaseLayout>

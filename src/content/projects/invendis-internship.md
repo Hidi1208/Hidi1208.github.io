@@ -1,61 +1,53 @@
 ---
 title: 'Hardware Design Internship — Invendis Technologies'
-oneLiner: 'Schematic design of a Wi-Fi 6 router/gateway board around the MediaTek MT7981A (Filogic 820), across 15 OrCAD pages.'
+oneLiner: 'Schematic design of a Wi-Fi 6 router board around the MediaTek MT7981A, across 15 pages in OrCAD.'
 year: 'May–Jun 2026'
 channel: CH2
-hero:
-  src: '/images/invendis-internship/hero.webp'
-  alt: 'Simplified block diagram of the router board: MT7981A SoC connected to DDR4, SPI NAND, Ethernet switch, Wi-Fi 6 RF, USB 3.0 hub and 5G modem, fed by a sequenced power tree.'
-  type: image
 order: 4
 featured: true
+hero:
+  src: '/images/invendis-internship/hero.webp'
+  alt: 'Simplified block diagram of the router board: MT7981A connected to DDR4, SPI NAND, Ethernet switch, Wi-Fi 6 RF, USB hub and 5G modem, fed by a sequenced power tree.'
+  type: image
 specs:
   - key: SoC
     value: MediaTek MT7981A (Filogic 820)
   - key: Subsystems
-    value: Power · GbE switch · Wi-Fi 6 RF · USB 3.0 · DDR4
+    value: Power · GbE switch · Wi-Fi 6 RF · USB · DDR4
   - key: Scope
-    value: 15-page schematic · 4 buck + 3 LDO rails
+    value: 15-page schematic · 4 bucks + 3 LDOs
   - key: Tools
-    value: OrCAD Capture 17.4
+    value: OrCAD Capture
   - key: Role
-    value: Hardware design intern, Bangalore
+    value: Hardware design intern, R&D
 ---
 
 ## What it is
 
-A five-week industrial internship in the hardware R&D team at Invendis
-Technologies, working under a senior hardware design engineer. The project was
-the full schematic design of a Wi-Fi 6 router/gateway board built around the
-MediaTek MT7981A, aligned with Invendis's MediaTek-based Silbo product line.
-The board has four Gigabit LAN ports, Wi-Fi 6, two USB 3.0 ports, a 5G modem
-slot and 1 GB of DDR4. The schematics are proprietary, so this page shows a
-simplified architecture only.
+Five weeks in the hardware R&D team at Invendis in Bangalore, working under a
+senior hardware design engineer. The project was the schematic for a Wi-Fi 6
+router and gateway board for the Silbo product line. The schematics are
+proprietary, so what is shown here is a simplified block diagram I drew myself.
 
-## What I built
+## What I worked on
 
-- **Power architecture.** A 12 V input with fuse and TVS protection, four
-  SY8205FCC synchronous buck converters (5 V, 3.3 V, 0.87 V core, 1.2 V DDR),
-  three LDOs and a DDR4 termination regulator.
-- **Ethernet.** MT7531AE switch connected to the SoC over HSGMII, with MagJack
-  ports, ESD protection and strapping configuration.
-- **Wi-Fi 6 front end.** MT7976CN companion chip with a shared 40 MHz clock
-  and pi-network antenna matching.
-- **USB and cellular.** RTS5411T-GR hub splitting the SoC's single USB 3.0 port
-  into two external ports and an internal 5G modem link, with SIM interface.
-- **Memory.** DDR4 SDRAM and SPI NAND flash for OpenWrt, plus boot strapping.
-- **Organisation.** Structured the design into 15 subsystem pages with an
-  interface-prefixed net naming convention.
+- Multi-rail power distribution: a 12 V input with fuse and TVS protection, four
+  synchronous buck converters, three LDOs and DDR4 termination.
+- Power sequencing without power-good pins. The bucks do not have PGOOD, so the
+  start-up order the SoC needs is built from RC delays on the enable pins, with
+  reset released at least 35 ms after the rails settle.
+- Ethernet: a 7-port GbE switch linked to the SoC over HSGMII, with MagJack
+  ports, ESD protection and strapping.
+- Wi-Fi 6 front end with a shared 40 MHz clock and pi-network antenna matching.
+- USB hub splitting the SoC's single USB 3.0 port into external ports and an
+  internal 5G modem link, plus the SIM interface.
+- Organising the whole thing into 15 subsystem pages with a consistent net
+  naming convention, which matters more than it sounds like it does when you are
+  cross-referencing signals across that many sheets.
 
-## Design decisions
+## Things I had not thought about before
 
-- **TVS selection by inequality.** Chose the SMCJ16A so that adapter max 
-  standoff < breakdown < clamp < downstream absolute max, leaving a 4 V margin
-  below the buck converters' 30 V rating.
-- **Sequencing without power-good.** The SY8205FCC has no PGOOD pin, so I built
-  the SoC's required start-up order from RC delays on each enable pin
-  (t ≈ 0.454·RC), ending with reset released at least 35 ms after the rails settle.
-- **HSGMII over RGMII** for the switch link: fewer traces, serial signalling,
-  and no parallel-bus length-matching burden.
-- **Weak pulls on strapping pins** instead of hard ties, so boot modes can be
-  jumpered during debug and pins reused after latching.
+Choosing a TVS diode is an inequality, not a lookup. Adapter maximum below
+standoff, below breakdown, below clamp, below the absolute maximum of whatever
+sits downstream. Picking a part that satisfies all of it with margin left over
+took longer than I expected.

@@ -20,7 +20,7 @@ const secondaryByChannel = (['CH1', 'CH2', 'CH3'] as Channel[]).map((ch) => ({
 })).filter((group) => group.projects.length > 0);
 
 const description =
-  'Aniruddha Deshmukh — embedded systems and hardware engineer. Bare-metal firmware, PCB design, and applied ML, presented as an oscilloscope.';
+  'Aniruddha Deshmukh, final-year Electrical and Electronics Engineering student at VIT Vellore. Embedded systems, bare-metal firmware, PCB design, and applied ML.';
 ---
 
 <BaseLayout title={SITE.author} description={description}>
@@ -31,8 +31,7 @@ const description =
       <p class="readout hero-readout">CH1 · 5V/div · 1ms/div · TRIG↑</p>
       <h1>{SITE.author}</h1>
       <p class="hero-tagline">
-        Embedded systems &amp; hardware engineer — bare-metal firmware, PCB
-        design, and applied ML. Final-year EEE, VIT Vellore.
+         I build embedded systems and the intelligence and control that run on them.
       </p>
       <ScopeTrace variant="hero" class="hero-trace" />
     </div>

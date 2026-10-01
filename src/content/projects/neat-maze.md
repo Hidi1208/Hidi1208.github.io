@@ -1,57 +1,55 @@
 ---
 title: 'Cross-Maze Generalisation in Autonomous Navigation Using NEAT'
-oneLiner: 'Neuroevolution strategies for maze navigation that generalise across 100 procedurally generated mazes, with an aggregation method for evolved controllers.'
+oneLiner: 'Averaging 100 separately evolved NEAT controllers to see whether the result navigates a maze it has never seen.'
 year: '2025–2026'
 channel: CH3
-order: 1
-featured: false
+order: 5
 repos:
   - neat-maze-navigation
-status: 'Paper under review, IEEE RICE.'
 hero:
   src: '/images/neat-maze/hero.webp'
-  alt: 'Side-by-side paths of the aggregated controller and the single-population baseline on the unseen test maze, both ending in a wall collision.'
+  alt: 'Paths of the aggregated controller and the multi-environment baseline on the unseen test maze.'
   type: image
+status: 'Paper under review, IEEE RICE 2026.'
 specs:
   - key: Method
-    value: NEAT neuroevolution
+    value: Genome aggregation vs multi-env training
   - key: Scale
-    value: 100 procedural mazes
-  - key: Contribution
-    value: Controller aggregation method
+    value: 100 procedurally generated mazes
+  - key: Aggregation
+    value: Innovation-aligned averaging · 30% threshold
   - key: Tools
     value: Python · neat-python · Pygame
 ---
 
 ## What it is
 
-A study of how well neuroevolved navigation controllers generalise beyond the
-maze they were trained on. Two training strategies were evaluated across 100
-procedurally generated mazes, alongside a method for aggregating many evolved
-controllers into one.
+Coursework that turned into a paper, with Siddharth Brahmankar, Ashwin Vinod and
+Dr. M. Subashini. The question was whether you can get generalisation out of
+NEAT by evolving a controller per maze and then averaging them, rather than
+training one controller across every maze at once.
 
-![Four procedurally generated training mazes and the unseen test maze](/images/neat-maze/mazes.webp)
+![Procedurally generated training mazes and the unseen test maze](/images/neat-maze/mazes.webp)
 
 ## What I built
 
-- Implemented and compared **two neuroevolution training strategies** across **100
-  procedurally generated mazes**.
-- Designed an **aggregation method** combining 100 evolved NEAT controllers.
+- Two training strategies across 100 procedurally generated mazes.
+- An aggregation method that aligns genomes by innovation number and averages
+  weights, keeping only connections present in at least 30% of the population.
 
 ## Results
 
-Neither method reached the goal on the unseen maze. Aggregation did clearly
-better on both metrics: it survived 338 of 600 frames and came within 331 px of
-the goal, against 268 frames and 464 px for the single-population baseline. Both
-runs ended in a wall collision.
+Neither approach reached the goal on the unseen maze. Aggregation did better on
+both measures, surviving 26% longer (338 frames against 268) and finishing 29%
+closer to the goal (331 px against 464 px). Both runs ended in a wall.
 
-![Only 11 of 196 unique connection genes survived the 30% majority threshold](/images/neat-maze/gene-retention.webp)
+![Only 11 of 196 connection genes survived the majority threshold](/images/neat-maze/gene-retention.webp)
 
-The failure modes were the interesting part. The 30% majority threshold filtered
-196 unique connection genes down to 11, discarding the maze-specific obstacle
-avoidance each genome had evolved and leaving only a generic navigation
-skeleton. Among the 11 survivors, a mean weight standard deviation of 1.28
-meant opposing weights across mazes averaged toward zero, producing near
-straight-line motion. The baseline failed differently: averaging fitness across
-100 mazes diluted any single maze's selection signal to 1%, so no genome ever
-developed focused wall avoidance.
+The failure modes turned out to be the interesting part. The 30% threshold cut
+196 unique connection genes down to 11, which threw away the maze-specific
+obstacle avoidance and left a generic navigation skeleton. Among the survivors,
+weights that disagreed across mazes averaged toward zero, so the controller
+mostly drove straight. The baseline failed for a different reason: averaging
+fitness over 100 mazes dilutes any single maze's signal to 1%, so nothing ever
+specialised. All three findings point toward NEAT-GRU extensions as the next
+thing to try.

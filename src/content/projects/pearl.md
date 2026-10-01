@@ -1,6 +1,6 @@
 ---
 title: 'PEARL — Physical Environment Aware Reasoning Layer'
-oneLiner: 'Bare-metal STM32 multi-sensor acquisition feeding a three-layer context engine and LLM (cloud or local), streamed to a live web dashboard.'
+oneLiner: 'STM32 firmware feeding sensor data to a context engine and an LLM, so a machine can explain its own faults in plain language.'
 year: '2026'
 channel: CH1
 order: 1
@@ -8,42 +8,48 @@ featured: true
 repos:
   - pearl-embedded-diagnostics
 hero:
-  alt: 'PEARL hardware — STM32F401RE Nucleo board wired to an MPU9250 IMU and ACS712 current sensor, connected to a Raspberry Pi 5.'
+  src: '/images/pearl/hero.webp'
+  alt: 'STM32F401RE wired to an MPU9250 IMU and ACS712 current sensor, with a Raspberry Pi 5 behind it.'
   type: image
 specs:
   - key: MCU
     value: STM32F401RE · bare-metal HAL
   - key: Sensors
-    value: MPU9250 IMU · AK8963 · ACS712
+    value: MPU9250 · AK8963 · ACS712
   - key: Interfaces
-    value: I2C 400 kHz · UART · 12-bit ADC
+    value: I2C 400 kHz · UART 115200 · 12-bit ADC
   - key: Inference
-    value: Gemini Flash · Qwen 2.5 (llama.cpp)
+    value: Gemini Flash (API) or Qwen 2.5 (llama.cpp)
   - key: Stack
     value: STM32 HAL (C) · FastAPI · RPi 5
 ---
 
 ## What it is
 
-PEARL is my 7th-semester capstone: an embedded diagnostics layer that turns raw
-sensor data into natural-language reasoning about a machine's physical state. A
-bare-metal STM32 acquires multi-sensor data and streams it to a Raspberry Pi 5,
-where a three-layer context engine feeds an LLM that explains what the hardware
-is doing — the whole path, from I2C register reads to a live dashboard, is mine.
+My 7th semester project, supervised by Dr. Jacob Raglend I. The idea was to see
+whether an LLM could usefully diagnose what a piece of hardware is doing if you
+give it properly structured sensor context instead of raw numbers. The firmware,
+the hardware description layer and the whole acquisition to dashboard pipeline
+below are mine.
 
 ![STM32F401RE wired to the MPU9250 IMU and ACS712 current sensor](/images/pearl/hardware-closeup.webp)
 
 ## What I built
 
-- **Bare-metal STM32F401RE firmware** (HAL, PlatformIO) for multi-sensor
-  acquisition: an MPU9250 9-axis IMU over I2C at 400 kHz with AK8963 magnetometer
-  bypass, an ACS712 current sensor via the 12-bit ADC, and bidirectional UART.
-- **I2C bus recovery** — automatic stuck-SDA detection with clock-line toggling to
-  unwedge the bus without a power cycle.
-- A **project-agnostic hardware description layer** in YAML that decouples sensor
-  topology from the inference logic, so a new rig is a config change, not a rewrite.
-- The **end-to-end pipeline**: STM32 → UART → Raspberry Pi 5 → three-layer context
-  engine → LLM (Gemini Flash / Qwen 2.5 via `llama.cpp`) → live web dashboard
-  (FastAPI + WebSocket, PySerial on the ingest side).
+- Bare-metal STM32F401RE firmware in HAL and PlatformIO, reading an MPU9250 IMU
+  over I2C at 400 kHz with the AK8963 magnetometer bypass, an ACS712 current
+  sensor on the 12-bit ADC, and bidirectional UART at 115200 baud.
+- I2C bus recovery. If SDA gets stuck the firmware detects it and toggles the
+  clock line to free the bus, so a wedged sensor no longer needs a power cycle.
+  This came out of debugging, not planning.
+- A YAML hardware description layer that keeps sensor topology separate from the
+  inference logic, so swapping hardware does not mean touching code.
+- The full path: STM32 to UART as JSON telemetry at 5 Hz, into a Raspberry Pi 5,
+  through a three layer context engine, to either Gemini Flash over the API or
+  Qwen 2.5 running locally through llama.cpp, out to a FastAPI and WebSocket
+  dashboard.
+- Four fault scenarios demonstrated live: an I2C disconnection with auto
+  recovery, magnetic interference, physical disturbance, and an orientation
+  change. The system tells them apart by which sensor channels drift.
 
-![Live dashboard flagging a detected fault with the LLM's diagnosis](/images/pearl/dashboard-fault.webp)
+![Live dashboard flagging a detected fault](/images/pearl/dashboard-fault.webp)
